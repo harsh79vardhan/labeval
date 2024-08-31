@@ -1,0 +1,94 @@
+class contman:
+    def __init__(self):
+        self.contacts = {}
+
+    def add_contact(self, name, phone_number, email=None):
+            if name in self.contacts:
+                print("already there.")
+            else:
+                self.contacts[name] = {'phone_number': phone_number, 'email': email}
+                print(f"contact '{name}' added ")
+
+    def update_contact(self, name, phone_number=None, email=None):
+        if name in self.contacts:
+            if phone_number:
+                self.contacts[name]['phone_number'] = phone_number
+            if email:
+                self.contacts[name]['email'] = email
+            print(f"contact '{name}' updated")
+        else:
+            print("not found.")
+        
+    def delete_contact(self, name):
+        if name in self.contacts:
+            del self.contacts[name]
+            print(f"contact '{name}' deleted")
+        else:
+            print("contact not found.")
+
+    def list_all_contacts(self):
+            if not self.contacts:
+                print("not available")
+                return
+            for name, info in self.contacts.items():
+                email = info['email'] if info['email'] else "N/A"
+                print(f"Name: {name}, Phone: {info['phone_number']}, Email: {email}")
+            
+    def search_contacts(self, search_term):
+            results = {name: info for name, info in self.contacts.items() if search_term in name or search_term in (info['email'] or '')}
+            if not results:
+                print("not found")
+            else:
+                for name, info in results.items():
+                    email = info['email'] if info['email'] else "N/A"
+                    print(f"Name: {name}, Phone: {info['phone_number']}, Email: {email}")
+            
+        
+def main():
+    manag=contman()
+    while True:
+        print("1. add")
+        print("2. update")
+        print("3. delete cont")
+        print("4. list cont")
+        print("5. search cont")
+        print("6. list by ini letter")
+        print("7. Exit")
+
+        choice = input("enter choice: ")
+
+        if choice == '1':
+            name = input("Enter name: ")
+            phone_number = input("Enter phone number: ")
+            email = input("Enter email (optional): ")
+            manag.add_contact(name, phone_number, email if email else None)
+
+        elif choice == '2':
+            name = input("Enter name of contact to update: ")
+            phone_number = input("Enter new phone number (leave blank to keep current): ")
+            email = input("Enter new email (leave blank to keep current): ")
+            manag.update_contact(name, phone_number if phone_number else None, email if email else None)
+
+        elif choice == '3':
+            name = input("Enter name of contact to delete: ")
+            manag.delete_contact(name)
+
+        elif choice == '4':
+            manag.list_all_contacts()
+
+        elif choice == '5':
+            search_term = input("Enter name or email to search: ")
+            manag.search_contacts(search_term)
+
+        elif choice == '6':
+            initial = input("Enter initial letter: ")
+            manag.list_contacts_by_initial(initial)
+
+        elif choice == '7':
+            break
+
+        else:
+            print("Invalid choice. Please select again.")
+        
+if __name__ == "__main__":
+    main()
